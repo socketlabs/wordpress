@@ -32,11 +32,11 @@ https://www.socketlabs.com/blog/configure-wordpress-plugin/
 
 ## Frequently Asked Questions
 
-** How is this plugin used **
+**How is this plugin used**
 
 Once configured, the plugin will override the Wordpress mailing feature and send your email through your SocketLabs Injection API.
 
-** How do I create a SocketLabs account **
+**How do I create a SocketLabs account**
 
 You can sign up for a free account here https://www.socketlabs.com/signup_form/?plan=Free.
 
