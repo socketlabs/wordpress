@@ -8,22 +8,39 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              http://socketlabs.com
+ * @link              https://socketlabs.com
  * @since             1.0.0
  * @package           SocketLabs
  *
  * @wordpress-plugin
  * Plugin Name:       SocketLabs
  * Plugin URI:        https://github.com/socketlabs/wordpress
- * Description:       Send emails using your SocketLabs email account.
+ * Description:       Send emails using your SocketLabs account.
  * Version:           1.0.0
  * Author:            SocketLabs
- * Author URI:        http://socketlabs.com/
+ * Author URI:        https://socketlabs.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       socketlabs
  * Domain Path:       /languages
  */
+ 
+ 
+ /*
+The SocketLabs WordPress Plugin is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 2 of the License, or
+any later version.
+ 
+The SocketLabs WordPress Plugin is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+ 
+You should have received a copy of the GNU General Public License
+along with The SocketLabs WordPress Plugin. If not, see http://www.gnu.org/licenses/gpl-2.0.txt.
+*/
+
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
