@@ -267,22 +267,21 @@ class Socketlabs {
 
 		//Attempt an api call with the available credentials
         if(!defined("SOCKETLABS_API_STATUS")){
-			
             $payload = (object) array(
                 "ServerId" => Socketlabs::get_server_id(),
                 "ApiKey"=> Socketlabs::get_api_key(),
-                "Messages"=> array()
+                "Messages"=> array((object)array())
 			);
-			
 
             $response = wp_remote_post( SOCKETLABS_INJECTION_URL, array(
                 'method' => 'POST',
 				'body' => json_encode($payload),
 				'headers' => array(
-					'Content-Type' => 'application/json'
+					'Content-Type' => 'application/json',
+					'Accept' => 'application/json'
 				)
-            ));
-            
+			));
+			
             if ( is_wp_error( $response ) ) {
 				define("SOCKETLABS_API_STATUS", Socketlabs_Api_Status::$NETWORK_ERROR);
             } else {
@@ -290,19 +289,20 @@ class Socketlabs {
 
 				if(isset($jsonResponse->ErrorCode)){
 					$errorCode = $jsonResponse->ErrorCode;
-					switch(strtolower($jsonResponse->ErrorCode)){
+					switch(strtolower($errorCode)){
 						case "invalidauthentication":
 						define("SOCKETLABS_API_STATUS", SocketLabs_Api_Status::$BAD_CREDENTIALS);
-						case "nomessages":
+						break;
+						case "novalidrecipients":
 						define("SOCKETLABS_API_STATUS", Socketlabs_Api_Status::$SUCCESS);
+						break;
 						default : 
 						define("SOCKETLABS_API_STATUS", $errorCode);
 					}
 				}
 				define("SOCKETLABS_API_STATUS", SocketLabs_Api_Status::$UNKNOWN);
-            }
-        }
+			}
+		}
         return SOCKETLABS_API_STATUS;    
     }
-
 }
