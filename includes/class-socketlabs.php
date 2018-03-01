@@ -300,7 +300,9 @@ class Socketlabs {
 						define("SOCKETLABS_API_STATUS", $errorCode);
 					}
 				}
-				define("SOCKETLABS_API_STATUS", SocketLabs_Api_Status::$UNKNOWN);
+				else{
+					define("SOCKETLABS_API_STATUS", SocketLabs_Api_Status::$UNKNOWN);
+				}
 			}
 		}
         return SOCKETLABS_API_STATUS;    
