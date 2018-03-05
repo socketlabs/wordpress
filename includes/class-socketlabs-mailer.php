@@ -23,7 +23,7 @@ class Socketlabs_Mailer{
         
         const header_regex = "/^([\w-]+):\s*(.*)$/";
         const charset_regex = "/charset=(.+)$/";
-        const contact_regex = "/^["|']?([^"|']*)["|']?\s*<(.*)>.*$/";
+        const contact_regex = "/^[\"|']?([^\"|']*)[\"|']?\s*<(.*)>.*$/";
         
         private $api_url;
         private $to;
@@ -157,7 +157,7 @@ class Socketlabs_Mailer{
                     case "content-type":
                         //Determine content type and attach content accordingly
                         //Determine charset and set  $api_message["Charset"] to the value
-
+                        //$content_type = "";
                         if ( strpos( $value, ';' ) !== false ) {
 							list( $type, $charset_content ) = explode( ';', $value );
 							$content_type = trim( $type );
