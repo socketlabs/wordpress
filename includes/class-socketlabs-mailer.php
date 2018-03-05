@@ -31,6 +31,7 @@ class Socketlabs_Mailer{
         private $message;
         private $headers;
         private $attachments;
+        private $content_type = "text/plain";
 
         private $api_message = array(
             "To"=> array(),
@@ -73,23 +74,133 @@ class Socketlabs_Mailer{
             $atts = apply_filters( 'wp_mail', compact( 'to', 'subject', 'message', 'headers', 'attachments' ) );
     
             if ( isset( $atts['to'] ) ) {
-                $this->to = $atts['to'];
+                $to = $atts['to'];
+                if(is_string($to)){
+                    $this->api_message["To"][] = (object)array("EmailAddress"=> $to);
+                }
+                else if(is_array($to)){
+                    foreach ($to as $recipient){
+                        $this->api_message["To"][] = (object)array("EmailAddress"=> $recipient);
+                    }
+                }
             }
         
             if ( isset( $atts['subject'] ) ) {
-                $this->subject = $atts['subject'];
+                $this->api_message["Subject"] = $atts['subject'];
             }
         
             if ( isset( $atts['message'] ) ) {
                 $this->message = $atts['message'];
             }
         
-            if ( isset( $atts['headers'] ) ) {
-                $this->headers = $atts['headers'];
-            }
-        
             if ( isset( $atts['attachments'] ) ) {
                 $this->attachments = $atts['attachments'];
+            }
+            
+            $headers = $atts['headers'];
+
+            if ( empty( $headers ) ) {
+                $headers = array();
+            } else {
+                if ( ! is_array( $headers ) ) {
+                    // Explode the headers out, so this function can take both
+                    // string headers and an array of headers.
+                    $tempheaders = explode( "\n", str_replace( "\r\n", "\n", $headers ) );
+                } else {
+                    $tempheaders = $headers;
+                }
+                $headers = array();
+    
+                // If it's actually got contents
+                if ( ! empty( $tempheaders ) ) {
+                    // Iterate through the raw headers
+                    foreach ( (array) $tempheaders as $header ) {
+                        if ( strpos( $header, ':' ) === false ) {
+                            if ( false !== stripos( $header, 'boundary=' ) ) {
+                                $parts    = preg_split( '/boundary=/i', trim( $header ) );
+                                $boundary = trim( str_replace( array( "'", '"' ), '', $parts[1] ) );
+                            }
+                            continue;
+                        }
+                        // Explode them out
+                        list( $name, $content ) = explode( ':', trim( $header ), 2 );
+    
+                        // Cleanup crew
+                        $name    = trim( $name );
+                        $content = trim( $content );
+    
+                        switch ( strtolower( $name ) ) {
+                            // Mainly for legacy -- process a From: header if it's there
+                            case 'from':
+                                $bracket_pos = strpos( $content, '<' );
+                                if ( $bracket_pos !== false ) {
+                                    // Text before the bracketed email is the "From" name.
+                                    if ( $bracket_pos > 0 ) {
+                                        $from_name = substr( $content, 0, $bracket_pos - 1 );
+                                        $from_name = str_replace( '"', '', $from_name );
+                                        $from_name = trim( $from_name );
+                                    }
+    
+                                    $from_email = substr( $content, $bracket_pos + 1 );
+                                    $from_email = str_replace( '>', '', $from_email );
+                                    $contact_match;
+                                    preg_match(self::contact_regex, $header, $contact_match);
+                                    if(isset($contact_match[1][0]) && isset($contact_match[2][0])){
+                                        $this->apply_from($contact_match[1][0], $contact_match[2][0]);
+                                    }
+                                    // Avoid setting an empty $from_email.
+                                } elseif ( '' !== trim( $content ) ) {
+                                    $this->api_message["From"] = trim( $content );
+                                    $this->apply_from("", trim( $content ));
+                                }
+                                break;
+                            case 'content-type':
+                                if ( strpos( $content, ';' ) !== false ) {
+                                    list( $type, $charset_content ) = explode( ';', $content );
+                                    $this->content_type                   = trim( $type );
+                                    if ( false !== stripos( $charset_content, 'charset=' ) ) {
+                                        $this->api_message["Charset"] = trim( str_replace( array( 'charset=', '"' ), '', $charset_content ) );
+                                    } elseif ( false !== stripos( $charset_content, 'boundary=' ) ) {
+                                        $boundary = trim( str_replace( array( 'BOUNDARY=', 'boundary=', '"' ), '', $charset_content ) );
+                                        $this->api_message["Charset"] = apply_filters( 'wp_mail_charset', "" );
+                                    }
+    
+                                    // Avoid setting an empty $content_type.
+                                } elseif ( '' !== trim( $content ) ) {
+                                    $this->api_message["Charset"] = apply_filters( 'wp_mail_charset', trim( $content ) );
+                                }
+                                break;
+                            case 'cc':
+                                $cc = array();
+                                array_merge( (array) $cc, explode( ',', $content ) );
+                                foreach ($cc as $recipient){
+                                    $this->api_message["Cc"][] = $this->create_contact($recipient);
+                                }
+                                break;
+                            case 'bcc':
+                                $bcc = array();
+                                array_merge( (array) $bcc, explode( ',', $content ) );
+                                foreach ($bcc as $recipient){
+                                    $this->api_message["Bcc"][] = $this->create_contact($recipient);
+                                }
+                                break;
+                            case 'reply-to':
+                                $reply_to = array();
+                                array_merge( (array) $reply_to, explode( ',', $content ) );
+                                foreach ($reply_to as $recipient){
+                                    $this->api_message["ReplyTo"][] = $this->create_contact($recipient);
+                                }
+                                break;
+                            default:
+                                // Add it to our grand headers array
+                                $this->api_message["CustomHeaders"][] = (object)array(
+                                    "Name" => $name,
+                                    "Value" => trim( $content ),
+                                );                                
+                                break;
+                        }
+                    }
+                }
             }
 
             $this->create_message();
@@ -134,108 +245,24 @@ class Socketlabs_Mailer{
             $this->api_message["From"] = (object)$from;
                 
         }
-        
+
         /**
-         * A helper function that is parses a single header and applies header to the $api_message
+         * A helper function that is creates a conact suitable for the api messag
          *
          * @since    1.0.0
          * @access   private
          * @param    string      $header        Any single header item
          * @return   void
          */
-        private function apply_header($header){
+        private function create_contact($value){
+            $contact_match;
+            preg_match(self::contact_regex, $value, $contact_match);
+            return isset($contact_match[2][0]) ?
+            (object)array(
+                "FriendlyName" => isset($contact_match[1][0]) ? $contact_match[1][0] : "",
+                "EmailAddress" => $contact_match[2][0],
+            ): null;
 
-            $header_matches;
-            preg_match(self::header_regex, $header, $header_matches);
-            
-            if(isset($header_matches[1]) && isset($header_matches[2])){
-                
-                $name = trim($header_matches[1][0]);
-                $value = trim($header_matches[2][0]);
-                
-                switch(strtolower($name)){
-                    case "content-type":
-                        //Determine content type and attach content accordingly
-                        //Determine charset and set  $api_message["Charset"] to the value
-                        //$content_type = "";
-                        if ( strpos( $value, ';' ) !== false ) {
-							list( $type, $charset_content ) = explode( ';', $value );
-							$content_type = trim( $type );
-							if ( false !== stripos( $charset_content, 'charset=' ) ) {
-								$charset = trim( str_replace( array( 'charset=', '"' ), '', $charset_content ) );
-							} elseif ( false !== stripos( $charset_content, 'boundary=' ) ) {
-								$boundary = trim( str_replace( array( 'BOUNDARY=', 'boundary=', '"' ), '', $charset_content ) );
-								$charset = '';
-							}
-
-						// Avoid setting an empty $content_type.
-						} elseif ( '' !== trim( $value ) ) {
-							$content_type = trim( $value );
-						}
-
-                        /**
-                         * Filters the wp_mail() content type.
-                         *
-                         * @since 1.0.0
-                         *
-                         * @param string $content_type Default wp_mail() content type.
-                         */
-                        $content_type = apply_filters( 'wp_mail_content_type', $content_type );
-
-                        // Set whether it's plaintext, depending on $content_type
-                        if ( 'text/html' == $content_type ){
-                            $this->api_message["TextBody"] = null;
-                            $this->api_message["HtmlBody"] = $this->content;
-                        }
-                        else{
-                            $this->api_message["TextBody"] = $this->content;
-                            $this->api_message["HtmlBody"] = null;
-                        }
-
-                        /**
-                         * Filters the default wp_mail() charset.
-                         *
-                         * @since 1.0.0
-                         *
-                         * @param string $charset Default email charset.
-                         */
-                        $this->api_message["Charset"] = apply_filters( 'wp_mail_charset', $charset );
-
-                        break;
-                    case "cc":
-                        $contact_match;
-                        preg_match(self::contact_regex, $value, $contact_match);
-                        if(isset($contact_match[1][0]) && isset($contact_match[2][0])){
-                            $this->api_message["Cc"][] = (object)array(
-                            "FriendlyName" => $contact_match[1][0],
-                            "EmailAddress" => $contact_match[2][0],
-                            );
-                        }
-                        break;
-                    case "bcc":
-                        $contact_match;
-                        preg_match(self::contact_regex, $value, $contact_match);
-                        if(isset($contact_match[1][0]) && isset($contact_match[2][0])){
-                            $this->api_message["Bcc"][] = (object)array(
-                            "FriendlyName" => $contact_match[1][0],
-                            "EmailAddress" => $contact_match[2][0],
-                            );
-                        }
-                        break;
-                    case "from":
-                        $contact_match;
-                        preg_match(self::contact_regex, $value, $contact_match);
-                        if(isset($contact_match[1][0]) && isset($contact_match[2][0])){
-                            $this->apply_from($contact_match[1][0], $contact_match[2][0]);
-                        }
-                        break;
-                    default :
-                        $this->api_message["CustomHeaders"][] = (object)array(
-                            "Name" => $name,
-                            "Value" => $value,
-                        );
-                }
-            }
         }
 
          /**
@@ -245,32 +272,26 @@ class Socketlabs_Mailer{
          * @return   void
          */
         private function create_message(){
-            $this->api_message["Subject"] = $this->subject;
 
-            //Assemble "To" property
-            if(is_string($this->to)){
-                $this->api_message["To"][] = (object)array("EmailAddress"=> $this->to);
-            }
-            else if(is_array($this->to)){
-                foreach ($this->to as $recipient){
-                    $this->api_message["To"][] = (object)array("EmailAddress"=> $recipient);
-                }
-            }
+            /**
+             * Filters the wp_mail() content type.
+             *
+             * @since 1.0.0
+             *
+             * @param string $content_type Default wp_mail() content type.
+             */
+            $this->content_type = apply_filters( 'wp_mail_content_type', $this->content_type );
 
-            //Assemble "CustomHeaders" property
-            if(is_string($this->headers)){
-                $this->apply_header($this->headers);
-            }
-            else if(is_array($this->headers)){
-                foreach($this->headers as $header){
-                    $this->apply_header($header);
-                }
-            }
-
-            //Set the TextBody if no content was set
-            if($this->api_message["TextBody"] == null && $this->api_message["HtmlBody"] == null){
+            // Set whether it's plaintext, depending on $content_type
+            if ( 'text/plain' == $this->content_type ){
                 $this->api_message["TextBody"] = $this->message;
+                $this->api_message["HtmlBody"] = null;
             }
+            else{
+                $this->api_message["TextBody"] = null;
+                $this->api_message["HtmlBody"] = $this->message;
+            }
+
 
             /* If we don't have an email from the input headers default to wordpress@$sitename
             * Some hosts will block outgoing mail from this address if it doesn't exist but
