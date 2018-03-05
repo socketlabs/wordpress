@@ -9,14 +9,14 @@
  * that starts the plugin.
  *
  * @link              https://socketlabs.com
- * @since             1.0.0
+ * @since             1.0.2
  * @package           SocketLabs
  *
  * @wordpress-plugin
  * Plugin Name:       SocketLabs
  * Plugin URI:        https://github.com/socketlabs/wordpress
  * Description:       Send emails using your SocketLabs account.
- * Version:           1.0.0
+ * Version:           1.0.2
  * Author:            SocketLabs
  * Author URI:        https://socketlabs.com/
  * License:           GPL-2.0+

@@ -2,9 +2,9 @@
 Contributors: socketlabs
 Tags: email, injection, smtp, mailer, wp_mail, mailing, deliverability
 Requires at least: 3.0.1
-Tested up to: 4.9.1
+Tested up to: 4.9.4
 Requires PHP: 3.0.1
-Stable tag: 1.0.0
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://socketlabs.com/
@@ -49,5 +49,9 @@ You can sign up for a free account here https://socketlabs.com/signup_form/?plan
 Visit our Support System if you have any questions, the SocketLabs Support Team is happy to help — https://support.socketlabs.com/
 
 == Changelog ==
+= 1.0.2 =
+* Fixed SOCKETLABS_API_STATUS variable error.
+= 1.0.1 =
+* Improved error handling
 = 1.0 =
 * Initial release.
