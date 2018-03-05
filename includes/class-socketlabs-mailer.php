@@ -40,7 +40,7 @@ class Socketlabs_Mailer{
             "TextBody"=> null,
             "HtmlBody"=> null,
             "ApiTemplate"=> null,
-            "MailingId"=> null,
+            "MailingId"=> "wordpress",
             "MessageId"=> null,
             "Charset"=> null,
             "ReplyTo"=>null,
