@@ -21,9 +21,9 @@
  */
 class Socketlabs_Mailer{
         
-        const header_regex = "/([\w-]+): (.*)/g";
-        const charset_regex = "/charset=(.+)$/g";
-        const contact_regex = "/^(.+)<(.*)>$/g";
+        const header_regex = "/^([\w-]+):\s*(.*)$/";
+        const charset_regex = "/charset=(.+)$/";
+        const contact_regex = "/^["|']?([^"|']*)["|']?\s*<(.*)>.*$/";
         
         private $api_url;
         private $to;
@@ -207,8 +207,8 @@ class Socketlabs_Mailer{
                         preg_match(self::contact_regex, $value, $contact_match);
                         if(isset($contact_match[1][0]) && isset($contact_match[2][0])){
                             $this->api_message["Cc"][] = (object)array(
-                            "EmailAddress" => $contact_match[1][0],
-                            "FriendlyName" => $contact_match[2][0],
+                            "FriendlyName" => $contact_match[1][0],
+                            "EmailAddress" => $contact_match[2][0],
                             );
                         }
                         break;
@@ -217,8 +217,8 @@ class Socketlabs_Mailer{
                         preg_match(self::contact_regex, $value, $contact_match);
                         if(isset($contact_match[1][0]) && isset($contact_match[2][0])){
                             $this->api_message["Bcc"][] = (object)array(
-                            "EmailAddress" => $contact_match[1][0],
-                            "FriendlyName" => $contact_match[2][0],
+                            "FriendlyName" => $contact_match[1][0],
+                            "EmailAddress" => $contact_match[2][0],
                             );
                         }
                         break;
