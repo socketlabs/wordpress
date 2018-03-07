@@ -21,9 +21,7 @@
  */
 class Socketlabs_Mailer{
         
-        const header_regex = "/^([\w-]+):\s*(.*)$/";
-        const charset_regex = "/charset=(.+)$/";
-        const contact_regex = "/^[\"|']?([^\"|']*)[\"|']?\s*<(.*)>.*$/";
+        const contact_regex = '/^.+:\s*["]?([^"]*)["]?\s*<(.*)>.*$/';
         
         private $api_url;
         private $to;
@@ -60,7 +58,6 @@ class Socketlabs_Mailer{
          * @param    array                $attachments   A collection of attachments.
          */
         function __construct ($to, $subject, $message, $headers, $attachments){
-            
             $this->api_url = defined("SOCKETLABS_INJECTION_URL") ? SOCKETLABS_INJECTION_URL : "https://inject.socketlabs.com/api/v1/email";
             
             /**
@@ -98,7 +95,6 @@ class Socketlabs_Mailer{
             }
             
             $headers = $atts['headers'];
-
             if ( empty( $headers ) ) {
                 $headers = array();
             } else {
@@ -110,7 +106,6 @@ class Socketlabs_Mailer{
                     $tempheaders = $headers;
                 }
                 $headers = array();
-    
                 // If it's actually got contents
                 if ( ! empty( $tempheaders ) ) {
                     // Iterate through the raw headers
@@ -132,6 +127,7 @@ class Socketlabs_Mailer{
                         switch ( strtolower( $name ) ) {
                             // Mainly for legacy -- process a From: header if it's there
                             case 'from':
+            
                                 $bracket_pos = strpos( $content, '<' );
                                 if ( $bracket_pos !== false ) {
                                     // Text before the bracketed email is the "From" name.
@@ -143,16 +139,19 @@ class Socketlabs_Mailer{
     
                                     $from_email = substr( $content, $bracket_pos + 1 );
                                     $from_email = str_replace( '>', '', $from_email );
+
+                        
                                     $contact_match;
                                     preg_match(self::contact_regex, $header, $contact_match);
-                                    if(isset($contact_match[1][0]) && isset($contact_match[2][0])){
-                                        $this->apply_from($contact_match[1][0], $contact_match[2][0]);
+
+                                    if(isset($contact_match[2])){
+                                        $this->apply_from(isset($contact_match[1]) ? $contact_match[1] : "", $contact_match[2]);
                                     }
                                     // Avoid setting an empty $from_email.
                                 } elseif ( '' !== trim( $content ) ) {
-                                    $this->api_message["From"] = trim( $content );
                                     $this->apply_from("", trim( $content ));
                                 }
+    
                                 break;
                             case 'content-type':
                                 if ( strpos( $content, ';' ) !== false ) {
@@ -257,10 +256,10 @@ class Socketlabs_Mailer{
         private function create_contact($value){
             $contact_match;
             preg_match(self::contact_regex, $value, $contact_match);
-            return isset($contact_match[2][0]) ?
+            return isset($contact_match[2]) ?
             (object)array(
-                "FriendlyName" => isset($contact_match[1][0]) ? $contact_match[1][0] : "",
-                "EmailAddress" => $contact_match[2][0],
+                "FriendlyName" => isset($contact_match[1]) ? $contact_match[1] : "",
+                "EmailAddress" => $contact_match[2]
             ): null;
 
         }
