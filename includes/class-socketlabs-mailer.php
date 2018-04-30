@@ -186,8 +186,8 @@ class Socketlabs_Mailer{
                             case 'reply-to':
                                 $reply_to = array();
                                 array_merge( (array) $reply_to, explode( ',', $content ) );
-                                foreach ($reply_to as $recipient){
-                                    $this->api_message["ReplyTo"][] = $this->create_contact($recipient);
+                                if(count($reply_to) > 0){
+                                    $this->api_message["ReplyTo"] = $this->create_contact($recipient);
                                 }
                                 break;
                             default:
