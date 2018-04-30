@@ -184,11 +184,7 @@ class Socketlabs_Mailer{
                                 }
                                 break;
                             case 'reply-to':
-                                $reply_to = array();
-                                array_merge( (array) $reply_to, explode( ',', $content ) );
-                                if(count($reply_to) > 0){
-                                    $this->api_message["ReplyTo"] = $this->create_contact($recipient);
-                                }
+                                $this->api_message["ReplyTo"] = $this->create_contact($content);
                                 break;
                             default:
                                 // Add it to our grand headers array
@@ -256,12 +252,16 @@ class Socketlabs_Mailer{
         private function create_contact($value){
             $contact_match;
             preg_match(self::contact_regex, $value, $contact_match);
-            return isset($contact_match[2]) ?
-            (object)array(
-                "FriendlyName" => isset($contact_match[1]) ? $contact_match[1] : "",
-                "EmailAddress" => $contact_match[2]
-            ): null;
-
+            if( preg_match(self::contact_regex, $value, $contact_match) && isset($contact_match[2])){
+                return (object)array(
+                    "FriendlyName" => isset($contact_match[1]) ? $contact_match[1] : null,
+                    "EmailAddress" => $contact_match[2]
+                );
+            }
+            return (object)array(
+                "FriendlyName" => null,
+                "EmailAddress" => $value
+            );
         }
 
          /**
