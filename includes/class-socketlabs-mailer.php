@@ -51,7 +51,7 @@ class Socketlabs_Mailer{
          /**
          * @since    1.0.0
          * @access   private
-         * @param    string|array         $to            A single or colletion of recipients.
+         * @param    string|array         $to            A single or collection of recipients.
          * @param    string               $subject       The subject of the email.
          * @param    string               $message       The email message (or body).
          * @param    string|array         $headers       A single header or a collection of headers.
@@ -242,7 +242,7 @@ class Socketlabs_Mailer{
         }
 
         /**
-         * A helper function that is creates a conact suitable for the api messag
+         * A helper function that is creates a contact suitable for the api message
          *
          * @since    1.0.0
          * @access   private
@@ -281,7 +281,7 @@ class Socketlabs_Mailer{
              */
             $this->content_type = apply_filters( 'wp_mail_content_type', $this->content_type );
 
-            // Set whether it's plaintext, depending on $content_type
+            // Set whether it's plain text, depending on $content_type
             if ( 'text/plain' == $this->content_type ){
                 $this->api_message["TextBody"] = $this->message;
                 $this->api_message["HtmlBody"] = null;
