@@ -21,7 +21,7 @@
  */
 class Socketlabs_Mailer{
         
-        const contact_regex = '/^.+:\s*["]?([^"]*)["]?\s*<(.*)>.*$/';
+        const contact_regex = '/([^"]*)["]?\s*<(.*)>.*$/';
         
         private $api_url;
         private $to;
