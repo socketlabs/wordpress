@@ -261,15 +261,18 @@ class Socketlabs {
 	public static function get_api_status(){
 		
 		//Check to see if credentials are set
-		if(!defined("SOCKETLABS_API_STATUS") && (empty(Socketlabs::get_server_id()) || empty(Socketlabs::get_api_key()))){
+		$serverId = Socketlabs::get_server_id();
+		$apiKey = Socketlabs::get_api_key();
+
+		if(!defined("SOCKETLABS_API_STATUS") && (empty($serverId) || empty($apiKey))){
 			define("SOCKETLABS_API_STATUS", Socketlabs_Api_Status::$NO_CREDENTIALS);
 		}
 
 		//Attempt an api call with the available credentials
         if(!defined("SOCKETLABS_API_STATUS")){
             $payload = (object) array(
-                "ServerId" => Socketlabs::get_server_id(),
-                "ApiKey"=> Socketlabs::get_api_key(),
+                "ServerId" => $serverId,
+                "ApiKey"=> $apiKey,
                 "Messages"=> array((object)array())
 			);
 
