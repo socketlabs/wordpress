@@ -137,6 +137,11 @@ class Socketlabs {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-socketlabs-mailer.php';
 		
+		/**
+		 * Helper functions for file managment
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-socketlabs-io.php';
+		
 		
 		$this->loader = new Socketlabs_Loader();
 

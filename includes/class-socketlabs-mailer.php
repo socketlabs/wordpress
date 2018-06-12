@@ -24,11 +24,6 @@ class Socketlabs_Mailer{
         const contact_regex = '/([^"]*)["]?\s*<(.*)>.*$/';
         
         private $api_url;
-        private $to;
-        private $subject;
-        private $message;
-        private $headers;
-        private $attachments;
         private $content_type = "text/plain";
 
         private $api_message = array(
@@ -45,7 +40,7 @@ class Socketlabs_Mailer{
             "Cc"=> array(),
             "Bcc"=>array(),
             "CustomHeaders"=> array(),
-            "Attatchments"=> array()
+            "Attachments"=> array()
         );
 
          /**
@@ -91,7 +86,19 @@ class Socketlabs_Mailer{
             }
         
             if ( isset( $atts['attachments'] ) ) {
-                $this->attachments = $atts['attachments'];
+                $attachments = $atts['attachments'];
+            }
+            if ( ! is_array( $attachments ) ) {
+                $attachments = explode( "\n", str_replace( "\r\n", "\n", $attachments ) );
+            }
+            if ( ! empty( $attachments ) ) {
+                foreach ( $attachments as $attachment ) {
+                    try {
+                        $this->addAttachment( $attachment );
+                    } catch ( Exception $e ) {
+                        continue;
+                    }
+                }
             }
             
             $headers = $atts['headers'];
@@ -313,26 +320,62 @@ class Socketlabs_Mailer{
             }
         }
 
-         /**
-         * Send the assembled email message 
-         * collection.
-         *
-         * @since    1.0.0
-         * @return   object
-         */
-        public function send(){
-            
-            $payload = (object) array(
-                "ServerId" => Socketlabs::get_server_id(),
-                "ApiKey"=> Socketlabs::get_api_key(),
-                "Messages"=> array($this->api_message)
+    
+    /**
+     * Add an attachment from a path on the filesystem.
+     * Never use a user-supplied path to a file!
+     * Returns false if the file could not be found or read.
+     * @since      1.0.7
+     * @param string $path Path to the attachment.
+     * @param string $name Overrides the attachment name.
+     * @param string $type File extension (MIME) type.
+     * @return boolean
+     */
+    private function addAttachment($path, $name = '', $type = '')
+    {
+        try {
+            if (!@is_file($path)) {
+                throw new Exception("Cannot open file: " . $path);
+            }
+            // If a MIME type is not specified, try to work it out from the file name
+            if ($type == '') {
+                $type = Socketlabs_IO::filenameToType($path);
+            }
+            $filename = basename($path);
+            if ($name == '') {
+                $name = $filename;
+            }
+            $this->api_message["Attachments"][] = (object)array(
+                "Name" => $name,
+                "Content" => Socketlabs_IO::encodeFile($path),
+                "ContentType" => $type
             );
-
-            return wp_remote_post( $this->api_url, array(
-                'method' => 'POST',
-                'body' => json_encode($payload),
-                'headers' => 'Content-Type: application/json'
-            ));
+        } catch (Exception $exc) {
+            return false;
         }
+        return true;
+    }    
+
+    /**
+     * Send the assembled email message 
+     * collection.
+     *
+     * @since    1.0.0
+     * @return   object
+     */
+    public function send(){
+        
+        $payload = (object) array(
+            "ServerId" => Socketlabs::get_server_id(),
+            "ApiKey"=> Socketlabs::get_api_key(),
+            "Messages"=> array($this->api_message)
+        );
+
+        return wp_remote_post( $this->api_url, array(
+            'method' => 'POST',
+            'body' => json_encode($payload),
+            'headers' => 'Content-Type: application/json'
+        ));
     }
+}
 ?>
