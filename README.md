@@ -45,6 +45,7 @@ You can sign up for a free account here https://www.socketlabs.com/signup_form/?
 Visit our Support System if you have any questions, the SocketLabs Support Team is happy to help — https://support.socketlabs.com/
 
 ## Changelog 
+* 1.0.8 Fixed: BCC and CC addresses were not being added.
 * 1.0.7 Added support for attachments.
 * 1.0.6 Fixed issue related to running older versions of PHP.
 * 1.0.5 Fixed issue with ReplyTo address not being set.
