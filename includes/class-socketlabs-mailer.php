@@ -177,15 +177,13 @@ class Socketlabs_Mailer{
                                 }
                                 break;
                             case 'cc':
-                                $cc = array();
-                                array_merge( (array) $cc, explode( ',', $content ) );
+                                $cc = explode( ',', $content );
                                 foreach ($cc as $recipient){
                                     $this->api_message["Cc"][] = $this->create_contact($recipient);
                                 }
                                 break;
                             case 'bcc':
-                                $bcc = array();
-                                array_merge( (array) $bcc, explode( ',', $content ) );
+                                $bcc = explode( ',', $content );
                                 foreach ($bcc as $recipient){
                                     $this->api_message["Bcc"][] = $this->create_contact($recipient);
                                 }
