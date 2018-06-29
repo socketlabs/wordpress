@@ -45,10 +45,11 @@ You can sign up for a free account here https://www.socketlabs.com/signup_form/?
 Visit our Support System if you have any questions, the SocketLabs Support Team is happy to help — https://support.socketlabs.com/
 
 ## Changelog 
+* 1.0.7 Added support for attachments.
 * 1.0.6 Fixed issue related to running older versions of PHP.
 * 1.0.5 Fixed issue with ReplyTo address not being set.
 * 1.0.4 Fixed issue with headers not being added correctly.
 * 1.0.3 Fixed issue with HTML formatted emails.
 * 1.0.2 Fixed SOCKETLABS_API_STATUS variable error.
-* 2.0.1 Improved error handling
+* 1.0.1 Improved error handling
 * 1.0.0 Initial release.
