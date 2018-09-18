@@ -68,9 +68,9 @@ class Socketlabs_Mailer{
             if ( isset( $atts['to'] ) ) {
                 $to = $atts['to'];
                 if(is_string($to)){
-                    $this->api_message["To"][] = (object)array("EmailAddress"=> $to);
+                    $to = explode( ',', $to );
                 }
-                else if(is_array($to)){
+                if(is_array($to)){
                     foreach ($to as $recipient){
                         $this->api_message["To"][] = (object)array("EmailAddress"=> $recipient);
                     }
