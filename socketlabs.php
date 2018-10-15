@@ -101,8 +101,7 @@ function run_socketlabs() {
 	$plugin->run();
 
 
-	$api_status = Socketlabs::get_api_status();
-	if($api_status == Socketlabs_Api_Status::$SUCCESS && !function_exists("wp_mail")){
+	if(!function_exists("wp_mail")){
 		function wp_mail( $to, $subject, $message, $headers = '', $attachments = array() ) {
 
             $socketlabs_mailer = new Socketlabs_Mailer($to, $subject, $message, $headers, $attachments);
