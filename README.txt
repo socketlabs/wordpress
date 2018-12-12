@@ -2,7 +2,7 @@
 Contributors: socketlabs
 Tags: email, injection, smtp, mailer, wp_mail, mailing, deliverability
 Requires at least: 3.0.1
-Tested up to: 4.9.4
+Tested up to: 5.0
 Requires PHP: 3.0.1
 Stable tag: 1.0.10
 License: GPLv2 or later
