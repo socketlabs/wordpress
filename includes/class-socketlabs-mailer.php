@@ -134,28 +134,13 @@ class Socketlabs_Mailer{
                         switch ( strtolower( $name ) ) {
                             // Mainly for legacy -- process a From: header if it's there
                             case 'from':
-            
-                                $bracket_pos = strpos( $content, '<' );
-                                if ( $bracket_pos !== false ) {
-                                    // Text before the bracketed email is the "From" name.
-                                    if ( $bracket_pos > 0 ) {
-                                        $from_name = substr( $content, 0, $bracket_pos - 1 );
-                                        $from_name = str_replace( '"', '', $from_name );
-                                        $from_name = trim( $from_name );
-                                    }
-    
-                                    $from_email = substr( $content, $bracket_pos + 1 );
-                                    $from_email = str_replace( '>', '', $from_email );
+                                $contact_match;
+                                preg_match(self::contact_regex, $content, $contact_match);
 
-                        
-                                    $contact_match;
-                                    preg_match(self::contact_regex, $header, $contact_match);
-
-                                    if(isset($contact_match[2])){
-                                        $this->apply_from(isset($contact_match[1]) ? $contact_match[1] : "", $contact_match[2]);
-                                    }
-                                    // Avoid setting an empty $from_email.
-                                } elseif ( '' !== trim( $content ) ) {
+                                if(isset($contact_match[2])){
+                                    $this->apply_from(isset($contact_match[1]) ? $contact_match[1] : "", $contact_match[2]);
+                                }
+                                elseif ( '' !== trim( $content ) ) {
                                     $this->apply_from("", trim( $content ));
                                 }
     
@@ -171,7 +156,7 @@ class Socketlabs_Mailer{
                                         $this->api_message["Charset"] = apply_filters( 'wp_mail_charset', "" );
                                     }
     
-                                    // Avoid setting an empty $content_type.
+                                // Avoid setting an empty $content_type.
                                 } elseif ( '' !== trim( $content ) ) {
                                     $this->api_message["Charset"] = apply_filters( 'wp_mail_charset', trim( $content ) );
                                 }
