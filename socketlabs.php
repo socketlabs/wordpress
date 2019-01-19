@@ -16,7 +16,7 @@
  * Plugin Name:       SocketLabs
  * Plugin URI:        https://github.com/socketlabs/wordpress
  * Description:       Send emails using your SocketLabs account.
- * Version:           1.0.10
+ * Version:           1.0.11
  * Author:            SocketLabs
  * Author URI:        https://socketlabs.com/
  * License:           GPL-2.0+
