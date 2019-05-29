@@ -72,7 +72,10 @@ class Socketlabs_Mailer{
                 }
                 if(is_array($to)){
                     foreach ($to as $recipient){
-                        $this->api_message["To"][] = (object)array("EmailAddress"=> $recipient);
+                        $recipient = trim($recipient);
+                        if($recipient != ""){
+                            $this->api_message["To"][] = (object)array("EmailAddress"=> $recipient);
+                        }
                     }
                 }
             }
