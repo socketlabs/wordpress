@@ -4,7 +4,7 @@ Tags: email, injection, smtp, mailer, wp_mail, mailing, deliverability
 Requires at least: 3.0.1
 Tested up to: 5.0
 Requires PHP: 3.0.1
-Stable tag: 1.0.11
+Stable tag: 1.0.12
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://socketlabs.com/
@@ -49,7 +49,9 @@ You can sign up for a free account here https://socketlabs.com/signup_form/?plan
 Visit our Support System if you have any questions, the SocketLabs Support Team is happy to help — https://support.socketlabs.com/
 
 == Change log 
-= 1.0.11 =`
+= 1.0.12 =
+* Fixed: Added recipient email verification check.
+= 1.0.11 =
 * Fixed: From field from showing "From" in header value.
 = 1.0.10 =
 * Fixed: Removed api status check from plugin startup.
