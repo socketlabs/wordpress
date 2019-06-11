@@ -49,6 +49,8 @@ You can sign up for a free account here https://socketlabs.com/signup_form/?plan
 Visit our Support System if you have any questions, the SocketLabs Support Team is happy to help — https://support.socketlabs.com/
 
 == Change log 
+= 1.0.13 =
+* Corrected a typo on connection status admin page.
 = 1.0.12 =
 * Fixed: Added recipient email verification check.
 = 1.0.11 =
