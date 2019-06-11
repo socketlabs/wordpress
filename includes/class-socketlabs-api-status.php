@@ -15,7 +15,7 @@
  *
  * @package    Socketlabs
  * @subpackage Socketlabs/includes
- * @author     SocketLabs Dev Team <info@socketlabs.com>
+ * @author     SocketLabs Dev Team <support@socketlabs.com>
  */
 
 class Socketlabs_Api_Status {

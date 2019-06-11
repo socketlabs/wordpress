@@ -18,7 +18,7 @@
  *
  * @package    Socketlabs
  * @subpackage Socketlabs/admin
- * @author     Socketlabs Dev Team <info@socketlabs.com>
+ * @author     Socketlabs Dev Team <support@socketlabs.com>
  */
 class Socketlabs_Admin {
 
