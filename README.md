@@ -45,6 +45,7 @@ You can sign up for a free account here https://www.socketlabs.com/signup_form/?
 Visit our Support System if you have any questions, the SocketLabs Support Team is happy to help — https://support.socketlabs.com/
 
 ## Changelog 
+* 1.0.13 Fixed: Corrected a typo on connection status admin page.
 * 1.0.12 Fixed: Added recipient email verification check.
 * 1.0.11 Fixed: From field from showing "From" in header value.
 * 1.0.10 Fixed: Removed api status check from plugin startup.
