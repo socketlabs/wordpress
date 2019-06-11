@@ -33,7 +33,7 @@
     if($api_status == Socketlabs_Api_Status::$SUCCESS){
 ?>
         <div class="sl-alert sl-active">
-            <h3 class="sl-key-status failed">Connetion Successful</h3>
+            <h3 class="sl-key-status failed">Connection Successful</h3>
             <p class="sl-description">Wordpress is now configured to send any generated email through your SocketLabs server. </p>
         </div>
 <?php    }
