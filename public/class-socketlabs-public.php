@@ -18,7 +18,7 @@
  *
  * @package    Socketlabs
  * @subpackage Socketlabs/public
- * @author     Your Name <info@socketlabs.com>
+ * @author     SocketLabs Dev Team <support@socketlabs.com>
  */
 class Socketlabs_Public {
 

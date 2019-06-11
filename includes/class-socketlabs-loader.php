@@ -19,7 +19,7 @@
  *
  * @package    Socketlabs
  * @subpackage Socketlabs/includes
- * @author     Your Name <info@socketlabs.com>
+ * @author     SocketLabs Dev Team <support@socketlabs.com>
  */
 class Socketlabs_Loader {
 

@@ -4,7 +4,7 @@ Tags: email, injection, smtp, mailer, wp_mail, mailing, deliverability
 Requires at least: 3.0.1
 Tested up to: 5.0
 Requires PHP: 3.0.1
-Stable tag: 1.0.12
+Stable tag: 1.0.13
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://socketlabs.com/
@@ -31,8 +31,8 @@ https://www.socketlabs.com/blog/configure-wordpress-plugin/
 
 == Installation ==
 1. From the admin dashboard choose plugins and click the "Add New" button.  
-1. Search for the socketlabs plugin and choose activate.
-1. Activate the plugin using the "Socketlabs" menu in WordPress.
+1. Search for the "SocketLabs" plugin and choose activate.
+1. Activate the plugin using the "SocketLabs" menu in WordPress.
 1. Add your api key and server id in the "Options" page.
 
 == Frequently Asked Questions ==
