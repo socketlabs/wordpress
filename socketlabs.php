@@ -16,7 +16,7 @@
  * Plugin Name:       SocketLabs
  * Plugin URI:        https://github.com/socketlabs/wordpress
  * Description:       Send emails using your SocketLabs account.
- * Version:           1.0.13
+ * Version:           1.0.14
  * Author:            SocketLabs
  * Author URI:        https://socketlabs.com/
  * License:           GPL-2.0+
@@ -24,19 +24,19 @@
  * Text Domain:       socketlabs
  * Domain Path:       /languages
  */
- 
- 
+
+
  /*
 The SocketLabs WordPress Plugin is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 2 of the License, or
 any later version.
- 
+
 The SocketLabs WordPress Plugin is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
- 
+
 You should have received a copy of the GNU General Public License
 along with The SocketLabs WordPress Plugin. If not, see http://www.gnu.org/licenses/gpl-2.0.txt.
 */
@@ -52,7 +52,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('SOCKETLABS_VERSION', '1.0.13');
+define('SOCKETLABS_VERSION', '1.0.14');
 define("SOCKETLABS_OPTION_GROUP", 'socketlabs');
 define("SOCKETLABS_API_KEY", 'socketlabs_api_key');
 define("SOCKETLABS_SERVER_ID", 'socketlabs_server_id');
