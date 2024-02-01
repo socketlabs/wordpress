@@ -49,6 +49,8 @@ You can sign up for a free account here https://socketlabs.com/signup_form/?plan
 Visit our Support System if you have any questions, the SocketLabs Support Team is happy to help — https://support.socketlabs.com/
 
 == Change log
+= 1.1.0 =
+* Removed deprecated get_magic_quotes_runtime().
 = 1.0.14 =
 * Confirmed functionality in WP v6.3.1.
 = 1.0.13 =
