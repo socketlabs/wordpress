@@ -208,26 +208,16 @@ class Socketlabs_IO
             if (!is_readable($path)) {
                 throw new Exception("Cannot open file: " . $path);
             }
-            $magic_quotes = get_magic_quotes_runtime();
-            if ($magic_quotes) {
-                if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-                    set_magic_quotes_runtime(false);
-                } else {
-                    //Doesn't exist in PHP 5.4, but we don't need to check because
-                    //get_magic_quotes_runtime always returns false in 5.4+
-                    //so it will never get here
-                    ini_set('magic_quotes_runtime', false);
-                }
-            }
+            //PHP versions greater than 5.3.0 should always have magic_quotes_runtime disabled.
+            //Magic quotes have been deprecated in PHP and removed as of PHP 5.4. So there is
+            //no reason to diable the feature.
+            //get_magic_quotes_runtime() deprecated and removed in PHP 7.4
+            //https://www.php.net/manual/en/function.get-magic-quotes-runtime.php
+            ini_set('magic_quotes_runtime', false);
+
             $file_buffer = file_get_contents($path);
             $file_buffer = base64_encode($file_buffer);
-            if ($magic_quotes) {
-                if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-                    set_magic_quotes_runtime($magic_quotes);
-                } else {
-                    ini_set('magic_quotes_runtime', $magic_quotes);
-                }
-            }
+
             return $file_buffer;
         } catch (Exception $exc) {
             return '';
