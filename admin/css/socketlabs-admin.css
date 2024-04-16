@@ -1,6 +1,7 @@
-#wpcontent{
-    /*padding-left:0;*/
+#wpcontent:has(#sl-plugin-container){
+    padding-left:0;
 }
+
 .sl-right {
 	float: right;
 }
@@ -186,7 +187,7 @@
 }
 
 .sl-masthead__inside-container {
-	padding:.375rem 0;
+	padding:1rem 0;
 	margin:0 auto;
 	width:100%;
 	max-width:45rem;
@@ -196,7 +197,7 @@
 	padding:.3125rem 0 0
 }
 .sl-masthead__logo {
-	height:1.8125rem;
+	height:1.5rem;
 }
 .sl-masthead__logo-link {
 	display:inline-block;
