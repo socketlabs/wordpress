@@ -93,20 +93,21 @@ class Socketlabs_Admin {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/socketlabs-admin.js', array( 'jquery' ), $this->version, false );
 	}
 
-	/**
-	 * Add the admin submenu options.
-	 *
-	 * @since    1.0.0
-	 */
-	public function admin_menu() {
-		add_submenu_page(
-			get_admin_page_parent(), 
-			'SocketLabs Options', 
-			'SocketLabs', 
-			'administrator', 
-			$this->plugin_name, 
-			array($this, 'create_admin_page') );
-	}
+    /**
+     * Register a custom menu page.
+     */
+    public function admin_menu() {
+        add_menu_page(
+            __( 'SocketLabs', 'textdomain' ),                           //page_title
+            'SocketLabs',                                               //menu_title
+            'administrator',                                            //capability
+            'socketlabs/admin/partials/socketlabs-admin-display.php',   //menu_slug
+            '',                                                         //callback
+            plugins_url( 'socketlabs/admin/images/logo-wp-icon.png' ),  //icon_url
+            ''                                                          //position
+            );
+    }
+    //add_action( 'admin_menu', 'register_socketlabs_menu' );
 
 	/**
 	 * Create the admin UI.
