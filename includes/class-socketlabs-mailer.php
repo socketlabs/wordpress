@@ -294,12 +294,23 @@ class Socketlabs_Mailer{
             * https://core.trac.wordpress.org/ticket/5007.
             */
 
-            if ( $this->api_message["From"] == null ) {
+            if ($this->api_message["From"] == null) {
                 $from_name = 'WordPress';
-                // Get the site domain and get rid of www.
-                $sitename = strtolower( $_SERVER['SERVER_NAME'] );
-                if ( substr( $sitename, 0, 4 ) == 'www.' ) {
-                    $sitename = substr( $sitename, 4 );
+                $sitename = 'localhost';
+
+                // Check if SERVER_NAME is set
+                if (isset($_SERVER['SERVER_NAME'])) {
+
+                    // Set sitename to SERVER_NAME
+                    $sitename = $_SERVER['SERVER_NAME'];
+
+                    // Make it lowercase
+                    $sitename = strtolower($sitename);
+
+                    // Get rid of www. if it exists
+                    if (substr($sitename, 0, 4) == 'www.') {
+                        $sitename = substr($sitename, 4);
+                    }
                 }
 
                 $from_email = 'wordpress@' . $sitename;
