@@ -43,6 +43,8 @@ class Socketlabs_Mailer{
             "Attachments"=> array()
         );
 
+        public $message;
+        
          /**
          * @since    1.0.0
          * @access   private

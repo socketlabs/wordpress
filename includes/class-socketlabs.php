@@ -82,8 +82,6 @@ class Socketlabs {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-
-		$this->api_status_manager = new Socketlabs_Api_Status();
 	}
 
 	/**
