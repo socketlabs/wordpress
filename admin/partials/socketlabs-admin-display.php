@@ -16,7 +16,7 @@
     <div class="sl-masthead">
         <div class="sl-masthead__inside-container">
             <div class="sl-masthead__logo-container">
-                <img class="sl-masthead__logo" src="https://www.socketlabs.com/assets/socketlabs-logo1.png" alt="SocketLabs">
+                <img class="sl-masthead__logo" src="<?php echo plugins_url( 'socketlabs/admin/images/logo-wp.svg' ) ?>" alt="SocketLabs">
             </div>
         </div>
     </div>
