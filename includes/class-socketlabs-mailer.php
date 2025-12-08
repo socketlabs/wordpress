@@ -363,17 +363,33 @@ class Socketlabs_Mailer{
      * @return   object
      */
     public function send(){
-        
-        $payload = (object) array(
-            "ServerId" => Socketlabs::get_server_id(),
-            "ApiKey"=> Socketlabs::get_api_key(),
-            "Messages"=> array($this->api_message)
+        $apiKey = Socketlabs::get_api_key();
+        $serverId = Socketlabs::get_server_id();
+
+        $headers = array(
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json'
         );
+
+        // If apiKey is 61 characters, use Bearer token in Authorization header
+        if (strlen($apiKey) === 61) {
+            $headers['Authorization'] = 'Bearer ' . $apiKey;		
+            $payload = (object) array(
+                "ServerId" => $serverId,
+                "Messages"=> array($this->api_message)
+            );
+        } else {
+            $payload = (object) array(
+                "ServerId" => $serverId,
+                "ApiKey"=> $apiKey,
+                "Messages"=> array($this->api_message)
+            );
+        }
 
         return wp_remote_post( $this->api_url, array(
             'method' => 'POST',
             'body' => json_encode($payload),
-            'headers' => 'Content-Type: application/json'
+            'headers' => $headers
         ));
     }
 }
