@@ -273,19 +273,29 @@ class Socketlabs {
 
 		//Attempt an api call with the available credentials
         if(!defined("SOCKETLABS_API_STATUS")){
-            $payload = (object) array(
-                "ServerId" => $serverId,
-                "ApiKey"=> $apiKey,
-                "Messages"=> array((object)array())
+            $headers = array(
+				'Content-Type' => 'application/json',
+				'Accept' => 'application/json'
 			);
+
+			$payload = (object) array(
+				"ServerId" => $serverId,
+				"Messages" => array((object)array())
+			);
+
+			// If apiKey is 61 characters, use Bearer token in Authorization header
+			if (strlen($apiKey) === 61) {
+				$headers['Authorization'] = 'Bearer ' . $apiKey;
+
+			} else {
+				// Otherwise, include apiKey in the payload
+				$payload["ApiKey"] = $apiKey;
+			}
 
             $response = wp_remote_post( SOCKETLABS_INJECTION_URL, array(
                 'method' => 'POST',
 				'body' => json_encode($payload),
-				'headers' => array(
-					'Content-Type' => 'application/json',
-					'Accept' => 'application/json'
-				)
+				'headers' => $headers
 			));
 			
             if ( is_wp_error( $response ) ) {
