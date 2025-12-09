@@ -2,9 +2,9 @@
 Contributors: socketlabs
 Tags: email, injection, smtp, mailer, wp_mail, mailing, deliverability
 Requires at least: 3.0.1
-Tested up to: 6.3.1
+Tested up to: 6.9
 Requires PHP: 3.0.1
-Stable tag: 1.1.0
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://socketlabs.com/
@@ -49,6 +49,8 @@ You can sign up for a free account here https://socketlabs.com/signup_form/?plan
 Visit our Support System if you have any questions, the SocketLabs Support Team is happy to help — https://support.socketlabs.com/
 
 == Change log
+= 1.2.1 =
+* Add support for Bearer token keys. Various bug fixes and improvements. 
 = 1.1.0 =
 * Removed deprecated get_magic_quotes_runtime().
 = 1.0.14 =
