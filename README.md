@@ -45,6 +45,7 @@ You can sign up for a free account here https://www.socketlabs.com/signup_form/?
 Visit our Support System if you have any questions, the SocketLabs Support Team is happy to help — https://support.socketlabs.com/
 
 ## Changelog
+* 1.2.1 Add support for Bearer token keys. Various bug fixes and improvements. 
 * 1.1.0 Removed deprecated get_magic_quotes_runtime().
 * 1.0.14 Confirmed functionality in WP v6.3.1.
 * 1.0.13 Fixed: Corrected a typo on connection status admin page.
