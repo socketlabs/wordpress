@@ -3,7 +3,6 @@ version: '3.8'
 services:
   wordpress:
     image: wordpress:latest
-    container_name: wp_app
     ports:
       - "8080:80"
     environment:
@@ -12,14 +11,12 @@ services:
       WORDPRESS_DB_PASSWORD: password
       WORDPRESS_DB_NAME: wordpress
     volumes:
-      - ./wp-content/plugins:/var/www/html/wp-content/plugins
+      - ./:/var/www/html/wp-content/plugins/my-plugin
     depends_on:
       - db
 
   db:
     image: mysql:8.0
-    container_name: wp_db
-    restart: always
     environment:
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wpuser

@@ -1,14 +1,16 @@
-
 {
-  "name": "WordPress Docker Dev",
-  "dockerComposeFile": "docker-compose.yml",
-  "service": "wordpress",
-  "workspaceFolder": "/workspace",
-  "forwardPorts": [8080],
-  "portsAttributes": {
-    "8080": {
-      "label": "WordPress",
-      "onAutoForward": "openBrowser"
-    }
-  }
+    "name": "WordPress Plugin Dev",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "wordpress",
+    "workspaceFolder": "/workspace",
+    "forwardPorts": [
+        8080
+    ],
+    "portsAttributes": {
+        "8080": {
+            "label": "WordPress",
+            "onAutoForward": "openBrowser"
+        }
+    },
+    "postCreateCommand": "sleep 10 && bash .devcontainer/setup.sh"
 }
