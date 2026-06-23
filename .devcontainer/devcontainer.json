@@ -1,0 +1,19 @@
+{
+    "name": "WordPress Plugin Dev",
+    "image": "mcr.microsoft.com/devcontainers/php:8.2",
+    "features": {
+        "ghcr.io/devcontainers/features/mysql:1": {
+            "version": "8.0"
+        }
+    },
+    "postCreateCommand": "bash .devcontainer/setup.sh",
+    "forwardPorts": [
+        8080
+    ],
+    "portsAttributes": {
+        "8080": {
+            "label": "WordPress",
+            "onAutoForward": "openBrowser"
+        }
+    }
+}
